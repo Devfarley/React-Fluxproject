@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import courseStore from '../stores/courseStore';
 import CourseList from './CourseList';
 import { Link } from 'react-router-dom';
-import { loadCourses } from '../actions/courseActions';
+import { loadCourses, deleteCourse } from '../actions/courseActions';
+import { toast } from 'react-toastify';
 
 const CoursesPage = () => {
   const [courses, setCourses] = useState(courseStore.getCourses());
@@ -17,13 +18,20 @@ const CoursesPage = () => {
     setCourses(courseStore.getCourses());
   };
 
+  const handleDelete = (id) => {
+    if (id) {
+      deleteCourse(id);
+      toast.success('Course Deleted');
+    }
+  };
+
   return (
     <>
       <h2>Courses</h2>
       <Link className='btn btn-primary' to='/course'>
-        Add Coures
+        Add Courses
       </Link>
-      <CourseList courses={courses} />
+      <CourseList courses={courses} deleteCourse={handleDelete} />
     </>
   );
 };
